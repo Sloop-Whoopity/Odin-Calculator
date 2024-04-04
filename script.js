@@ -6,7 +6,7 @@ const buttons = document.querySelectorAll("button");
 let regex = /[0-9]/; //Here we define the regular expression.  regex is all lowercase since it is an actual word
 let operEx = /[^0-9]/; //This means any non-digit character.
 let result;
-
+let array1 = []
 
 console.log(regex.test(5))
 
@@ -22,14 +22,16 @@ const numButtons = document.querySelectorAll(".numbers")
 
 numButtons.forEach((button) => button.addEventListener("click", () => {
     // display.textContent = button.textContent;
-    if (operator == null) {  //Not strictly equal since operator may start undefined
-        firstNumber === 0 ? firstNumber = button.textContent :
-        firstNumber += button.textContent;
-    } else if (operator != null && firstNumber != 0) {
-        secondNumber === 0 ? secondNumber = button.textContent :
-        secondNumber += button.textContent;
-        }
-    displayText();
+    // if (operator == null) {  //Not strictly equal since operator may start undefined
+    //     firstNumber === 0 ? firstNumber = button.textContent :
+    //     firstNumber += button.textContent;
+    // } else if (operator != null && firstNumber != 0) {
+    //     secondNumber === 0 ? secondNumber = button.textContent :
+    //     secondNumber += button.textContent;
+    //     }
+    // displayText();
+    firstNumber === 0 ? firstNumber = button.textContent :
+    firstNumber += button.textContent;
     }
     )
 );
@@ -44,6 +46,7 @@ buttons.forEach((button) => {
 const operButtons = document.querySelectorAll(".operators")
 
 operButtons.forEach((button) => button.addEventListener("click", () => {
+    array1.push(firstNumber)
     if (button.textContent === "=") {
         if (secondNumber === "0") {
             return firstNumber
@@ -57,6 +60,8 @@ operButtons.forEach((button) => button.addEventListener("click", () => {
         display.textContent = firstNumber;
     } else {
         operator = button.textContent;
+        array1.push(button.textContent);
+        firstNumber = 0;
     }
     }
 ));
@@ -81,7 +86,7 @@ function divide(a,b) {
 
 function operate(number1, operatorSign, number2) {
     if (operatorSign === "+") {
-       result = add(number1,number2);
+       firstNumber = add(number1,number2);
     } else if (operatorSign === "-") {
        result = subtract(number1, number2);
     } else if (operatorSign === "*") {
@@ -101,10 +106,6 @@ function displayText() {
         display.textContent = secondNumber;
     }
 };
+ 
 
-
-    // if (button.classList === "numbers") {
-    // button.addEventListener("click", () => {
-    // display.textContent = button.textContent;
-    // }
-    // )}   
+//Evaluate what the user is putting in each time they put in an input.  So if they input the + twice, then they fucked up.
