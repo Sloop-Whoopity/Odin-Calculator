@@ -7,7 +7,7 @@ let regex = /[0-9]/; //Here we define the regular expression.  regex is all lowe
 let operEx = /[^0-9]/; //This means any non-digit character.
 let result;
 let array1 = []
-let operatorInput = 0;
+let operatorInput = 0;  //Used to track if user has selected operator more than once and prevent unintended operate() call based on secondNumber resetting to 0;
 
 
 console.log(regex.test(5))
@@ -23,14 +23,16 @@ buttons.forEach((button) => {
 const numButtons = document.querySelectorAll(".numbers")
 
 numButtons.forEach((button) => button.addEventListener("click", () => {
-    // display.textContent = button.textContent;
-    if (operator == null) {  //Not strictly equal since operator may start undefined
-        firstNumber === 0 ? firstNumber = button.textContent :
-        firstNumber += button.textContent;
-    } else if (operator != null && firstNumber != 0) {
+    if (operator != null && firstNumber != 0) {
         secondNumber === 0 ? secondNumber = button.textContent :
         secondNumber += button.textContent;
-        }
+        operatorInput = 0;
+    } else {
+        firstNumber === 0 ? firstNumber = button.textContent :
+        firstNumber += button.textContent;
+        operator = null; //Allows user to type in firstNumber again if they reset first number to 0 through multiplication.
+    }
+    
     displayText();
     // firstNumber === 0 ? firstNumber = button.textContent :
     // firstNumber += button.textContent;
@@ -48,16 +50,16 @@ buttons.forEach((button) => {
 const operButtons = document.querySelectorAll(".operators")
 
 operButtons.forEach((button) => button.addEventListener("click", () => {
+    operatorInput += 1;
     if (button.textContent === "C") {
         firstNumber = 0;
         operator = null;
         secondNumber = 0;
         display.textContent = firstNumber;
         return
-    } else if (operator != null) {
+    } else if (operator != null && operatorInput === 1) {
         operate(+firstNumber, operator, +secondNumber);
         };
-    
     operator = button.textContent;  //Have the button that triggers the operate function change the operator after the calculation or set operator if operator is null.
     }
 ));
@@ -77,7 +79,12 @@ function multiply(a,b) {
 };
 
 function divide(a,b) {
+    if (b === 0) {
+        alert("Do you really think you can divide by zero?  Ask Siri why you can't.")
+        return 0;
+    } else {
     return a/b;
+    }
 };
 
 function operate(number1, operatorSign, number2) {
