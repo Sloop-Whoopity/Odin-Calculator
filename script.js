@@ -3,14 +3,12 @@ let secondNumber = 0;
 let operator;
 let display = document.querySelector(".display");
 const buttons = document.querySelectorAll("button");
-let regex = /[0-9]/; //Here we define the regular expression.  regex is all lowercase since it is an actual word
-let operEx = /[^0-9]/; //This means any non-digit character.
-let result;
-let array1 = []
+let regex = /[0-9.]/; //Here we define the regular expression.  regex is all lowercase since it is an actual word.  Also having regex = . for number purposes.
+let operEx = /[^0-9.]/; //This means any non-digit character.
 let operatorInput = 0;  //Used to track if user has selected operator more than once and prevent unintended operate() call based on secondNumber resetting to 0;
+let decimalCount = 0;
 
-
-console.log(regex.test(5))
+console.log(regex.test(5)) //Just a test for understanding regex.  Keeping the code in for memories.
 
 
 buttons.forEach((button) => {
@@ -20,26 +18,6 @@ buttons.forEach((button) => {
     }
 });
 
-const numButtons = document.querySelectorAll(".numbers")
-
-numButtons.forEach((button) => button.addEventListener("click", () => {
-    if (operator != null && firstNumber != 0) {
-        secondNumber === 0 ? secondNumber = button.textContent :
-        secondNumber += button.textContent;
-        operatorInput = 0;
-    } else {
-        firstNumber === 0 ? firstNumber = button.textContent :
-        firstNumber += button.textContent;
-        operator = null; //Allows user to type in firstNumber again if they reset first number to 0 through multiplication.
-    }
-    
-    displayText();
-    // firstNumber === 0 ? firstNumber = button.textContent :
-    // firstNumber += button.textContent;
-    }
-    )
-);
-
 buttons.forEach((button) => {
     if (operEx.test(button.textContent)) {
         button.classList.add("operators");
@@ -47,11 +25,34 @@ buttons.forEach((button) => {
     }
 });
 
+const numButtons = document.querySelectorAll(".numbers")
 const operButtons = document.querySelectorAll(".operators")
+
+numButtons.forEach((button) => button.addEventListener("click", () => {
+    if (button.textContent === ".") {
+            if (decimalCount > 0) {
+            console.log("You used too many decimals.  REturning!")
+            return;
+            } else {
+                decimalCount += 1;
+            }
+        }
+    if (operator != null) {
+        secondNumber === 0 ? secondNumber = button.textContent :
+        secondNumber += button.textContent;
+        operatorInput = 0;
+    } else {
+        firstNumber === 0 ? firstNumber = button.textContent :
+        firstNumber += button.textContent;
+    }
+    displayText();
+    }
+));
 
 operButtons.forEach((button) => button.addEventListener("click", () => {
     operatorInput += 1;
-    if (button.textContent === "C") {
+    decimalCount = 0;
+    if (button.textContent === "CE") {
         firstNumber = 0;
         operator = null;
         secondNumber = 0;
@@ -104,12 +105,10 @@ function operate(number1, operatorSign, number2) {
 }
 
 function displayText() {
-    if (secondNumber === 0) { //&& operator == null
+    if (secondNumber === 0) {
         display.textContent = firstNumber;
     } else {
         display.textContent = secondNumber;
     }
 };
  
-
-//Evaluate what the user is putting in each time they put in an input.  So if they input the + twice, then they fucked up.
