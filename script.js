@@ -1,13 +1,14 @@
 let firstNumber = 0;
 let secondNumber = 0;
 let operator;
-let display = document.querySelector(".display");
+const display = document.querySelector(".display");
 const buttons = document.querySelectorAll("button");
 let regex = /[0-9.%]|\+\/\-/;
 let operEx = /[^0-9.%]/;
 let operatorInput = 0;  //Used to track if user has selected operator more than once and prevent unintended operate() call based on secondNumber resetting to 0;
 let decimalCount = 0;
 let firstNumberBoolean = false; //Detects whether the currently displayed number is the first or second number.
+let styleOperators = /[^0-9.]/
 
 buttons.forEach((button) => {
     if (regex.test(button.textContent)) { //We use a regular expression to match if a character is a number between 0-9.  Number function doesn't work because it was translating special characters as numbers as well
@@ -20,6 +21,12 @@ buttons.forEach((button) => {
     if (operEx.test(button.textContent)) {
         button.classList.add("operators");
         console.log("Operator ", button.textContent)
+    }
+});
+
+buttons.forEach((button) => {
+    if (styleOperators.test(button.textContent)) {
+        button.style.backgroundColor = "rgb(233,245,255)";
     }
 });
 
