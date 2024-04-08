@@ -26,7 +26,7 @@ buttons.forEach((button) => {
 
 buttons.forEach((button) => {
     if (styleOperators.test(button.textContent)) {
-        button.style.backgroundColor = "rgb(233,245,255)";
+        button.style.backgroundColor = "rgb(240,245,250)";
     }
 });
 
